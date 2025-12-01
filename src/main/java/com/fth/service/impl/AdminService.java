@@ -1,17 +1,16 @@
 package com.fth.service.impl;
 
 
+import cn.hutool.core.bean.BeanUtil;
 import com.fth.dto.BanDTO;
 import com.fth.dto.LoginDTO;
-import com.fth.dto.PageResult;
 import com.fth.dto.UserDTO;
 import com.fth.mapper.AdminMapper;
 import com.fth.pojo.Admin;
+import com.fth.pojo.Essay;
 import com.fth.pojo.User;
 import com.fth.service.IAdminService;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
+import com.fth.vo.UserVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,9 +44,14 @@ public class AdminService implements IAdminService {
     }
 
     @Override
-    public User getUserDetail(Long id) {
+    public UserVO getUserDetail(Integer id) {
         log.info("单个用户查看");
-        return adminMapper.getUserDetail(id);
+        User user=adminMapper.getUserDetail(id);
+        UserVO userVO=new UserVO();
+        BeanUtil.copyProperties(user,userVO);
+        List<Essay> essays=adminMapper.getEssayByUserId(id);
+        userVO.setEssays(essays);
+        return userVO;
     }
 
     @Override

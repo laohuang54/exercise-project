@@ -6,6 +6,7 @@ import com.fth.pojo.User;
 import com.fth.properties.JwtProperty;
 import com.fth.service.IAdminService;
 import com.fth.utils.JwtUtil;
+import com.fth.vo.UserVO;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,9 +60,9 @@ public class AdminController {
  * @return 返回一个Result对象，包含用户信息
  */
     @GetMapping("/users/{id}")
-    public Result getUser(@PathVariable Long id){  // 使用@PathVariable注解获取路径中的id参数
-        User user = adminService.getUserDetail(id);  // 调用服务层方法获取用户详细信息
-        return Result.ok(user);  // 返回成功响应，包含用户信息
+    public Result getUser(@PathVariable Integer id){  // 使用@PathVariable注解获取路径中的id参数
+        UserVO userVO = adminService.getUserDetail(id);  // 调用服务层方法获取用户详细信息
+        return Result.ok(userVO);  // 返回成功响应，包含用户信息
     }
 
 /**

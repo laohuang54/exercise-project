@@ -7,6 +7,7 @@ import com.fth.service.impl.EssayService;
 import com.fth.utils.AliOssUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,6 +25,26 @@ public class EssayController {
     private EssayService essayService;
     @Autowired
     private AliOssUtil aliOssUtil;
+
+
+    @DeleteMapping("/user/delete/{id}")
+    public Result deleteEssay(@PathVariable Integer id) {
+        essayService.deleteEssay(id);
+        return Result.ok();
+    }
+    @DeleteMapping("/admin/delete/{id}")
+    public Result deleteEssayAdmin(@PathVariable Integer id) {
+        essayService.deleteEssayAdmin(id);
+        return Result.ok();
+    }
+
+    @PutMapping("/like/{id}")
+    public Result likeEssay(@PathVariable Integer id) {
+        essayService.likeEssay(id);
+        return Result.ok();
+    }
+
+
 
     @PostMapping("/add")
     public Result addEssay(@ModelAttribute EssayDTO essay) {

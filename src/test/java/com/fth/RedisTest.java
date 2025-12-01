@@ -16,7 +16,7 @@ public class RedisTest {
 
     @Test
     public void test(){
-        stringRedisTemplate.opsForValue().set("name","fth");
+        stringRedisTemplate.opsForValue().set("name1","cug");
     }
     public void test01(){
         User user=new User();

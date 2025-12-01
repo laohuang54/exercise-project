@@ -22,4 +22,7 @@
     <select id="getUserList" resultType="com.fth.pojo.User" parameterType="com.fth.dto.UserDTO">
 
     </select>
+    <select id="getEssayByUserId" resultType="com.fth.pojo.Essay" parameterType="java.lang.Long">
+            select * from essay where user_id = #{id}
+    </select>
 </mapper>

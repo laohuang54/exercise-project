@@ -3,6 +3,7 @@ package com.fth.service;
 import com.fth.dto.*;
 import com.fth.pojo.Admin;
 import com.fth.pojo.User;
+import com.fth.vo.UserVO;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ public interface IAdminService {
  */
     List<User> getUser(UserDTO userDTO);
 
-    User getUserDetail(Long id);
+    UserVO getUserDetail(Integer id);
 
     void banUser(BanDTO banDTO);
 }

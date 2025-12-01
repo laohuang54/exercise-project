@@ -14,22 +14,22 @@ import java.time.LocalDateTime;
 public class Essay {
     private Integer id;
 
-    private Integer userId;
+    private Integer userId; //外键约束 user表
 
     private String content;
 
     private Integer status;
 
-    private Integer liked;
+    private Integer liked; // 点赞量
 
-    private Integer comment;
+    private Integer comments; // 评论量
 
     private String img;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime; //发布时间
 
-    private Integer read;
+    private Integer read; // 阅读量
 
     private String title;
 }
