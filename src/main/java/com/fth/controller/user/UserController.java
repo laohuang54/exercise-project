@@ -72,7 +72,7 @@ public class UserController {
         return Result.ok(url);
     }
 
-    @PutMapping("/updateinfo")
+    @PutMapping("/updateinfo") //更新用户个人信息
     public Result updateInfo(@RequestBody User user){
         return userService.updateInfo(user);
     }
