@@ -1,11 +1,16 @@
 server:
   port: 8081
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
 spring:
   application:
     name: fth
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/daliy?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/daliy?useSSL=false&serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8
     username: root
     password: Fth419516.
   jackson:
@@ -15,6 +20,9 @@ spring:
       host: localhost
       port: 6379
       database: 0
+  mvc:
+    format:
+      date: yyyy-MM-dd HH:mm:ss
 mybatis:
   #mapper配置文件
   mapper-locations: classpath:mapper/*.xml
@@ -39,4 +47,4 @@ fth:
     # 用户token过期时间（7200000毫秒 = 2小时，保持不变）
     user-ttl: 7200000
     # 用户端令牌名称
-    user-token-name: authentication
+    user-token-name: token

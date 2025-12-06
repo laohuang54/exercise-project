@@ -30,5 +30,7 @@ public class User {
 
     private String reason; //封禁原因
 
+    private Integer score;
+
     private String token;
 }

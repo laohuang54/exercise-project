@@ -1,14 +1,12 @@
 package com.fth.utils;
 
-import com.fth.pojo.User;
-
 public class UserHolder {
-    private static final ThreadLocal<Long> tl = new ThreadLocal<>();
+    private static final ThreadLocal<Integer> tl = new ThreadLocal<>();
 
     public  static Integer getUserId(){
-        return Math.toIntExact(tl.get());
+        return tl.get();
     }
-    public static void saveUser(Long userId){
+    public static void saveUser(Integer userId){
         tl.set(userId);
     }
 

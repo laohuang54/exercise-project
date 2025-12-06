@@ -1,18 +1,23 @@
 package com.fth.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.fth.dto.LoginDTO;
 import com.fth.dto.RegisterDTO;
 import com.fth.dto.Result;
-import com.fth.dto.UserDTO;
+import com.fth.mapper.AdminMapper;
 import com.fth.mapper.UserMapper;
+import com.fth.pojo.Essay;
 import com.fth.pojo.User;
 import com.fth.service.IUserService;
+import com.fth.utils.UserHolder;
+import com.fth.vo.UserVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static com.fth.constant.UserConstant.LOGIN_ERROR;
 
@@ -21,6 +26,9 @@ import static com.fth.constant.UserConstant.LOGIN_ERROR;
 public class UserService implements IUserService {
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private AdminMapper adminMapper;
 
     @Override
     public User login(LoginDTO loginDTO) {
@@ -59,5 +67,45 @@ public class UserService implements IUserService {
         // 4. 入库
         userMapper.saveUser(user);
         return Result.ok("注册成功");
+    }
+
+    @Override
+    public User getUserInfo(Integer id) {
+        User info = userMapper.getInfo(id);
+        return info;
+    }
+
+    @Override
+    public UserVO getOthers(Integer id) {
+        User user=userMapper.getInfo(id);
+        UserVO userVO=new UserVO();
+        BeanUtil.copyProperties(user,userVO);
+        List<Essay> essays=adminMapper.getEssayByUserId(id);
+        userVO.setEssays(essays);
+        return userVO;
+    }
+
+    @Override
+    public Result updateInfo(User user) {
+        user.setId(UserHolder.getUserId());
+        userMapper.updateInfo(user);
+        return Result.ok("修改成功");
+    }
+
+    @Override
+    public Result updatePassword(String password, String newPassword) {
+        User info = userMapper.getInfo(UserHolder.getUserId());
+        String test_password = info.getPassword();
+        if (!test_password.equals(password)) {
+            return Result.fail("旧密码输入错误");
+        }
+        userMapper.updatepassword(UserHolder.getUserId(), newPassword);
+        return Result.ok("密码修改成功");
+    }
+
+    @Override
+    public Result deleteUser(Integer id) {
+        userMapper.deleteUser(id);
+        return Result.ok("删除成功");
     }
 }

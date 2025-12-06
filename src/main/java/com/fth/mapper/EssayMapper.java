@@ -1,9 +1,13 @@
 package com.fth.mapper;
 
 import com.fth.pojo.Essay;
+import com.fth.vo.EssayVO;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+
+import java.util.List;
 
 @Mapper
 public interface EssayMapper {
@@ -21,4 +25,10 @@ public interface EssayMapper {
 
     @Update("update essay set liked=liked-1 where id=#{id}")
     void decryLikes(Integer id);
+
+    @Select("select e.*,u.username,u.avatar from essay e left join user u on e.user_id=u.id")
+    List<EssayVO> getAllessay();
+
+    @Select("select * from essay where id=#{id}")
+    Essay getSingleEssay(Integer id);
 }

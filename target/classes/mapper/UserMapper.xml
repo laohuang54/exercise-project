@@ -22,4 +22,13 @@
             now()
         </trim>
     </insert>
+    <update id="updateInfo" parameterType="com.fth.pojo.User">
+        update user
+        <set>
+            <if test="username != null and username != ''">username=#{username},</if>
+            <if test="sex != null">sex=#{sex},</if>
+            <if test="avatar != null and avatar != ''">avatar=#{avatar},</if>
+        </set>
+        where id=#{id}
+    </update>
 </mapper>

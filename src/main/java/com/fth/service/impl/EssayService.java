@@ -7,14 +7,19 @@ import com.fth.mapper.EssayMapper;
 import com.fth.pojo.Essay;
 import com.fth.service.IEssayService;
 import com.fth.utils.UserHolder;
+import com.fth.vo.EssayVO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static com.fth.constant.KeysConstant.ESSAY_LIKES_KEY;
 
 @Service
+@Slf4j
 public class EssayService implements IEssayService {
     @Autowired
     private EssayMapper essayMapper;
@@ -42,7 +47,7 @@ public class EssayService implements IEssayService {
 
     @Override
     @Transactional // 数据库事务：保证点赞数修改和Redis操作一致
-    public void likeEssay(Integer id) {
+    public Result likeEssay(Integer id) {
         Integer userId = UserHolder.getUserId();
         String key = ESSAY_LIKES_KEY + id;
         String userStr = userId.toString();
@@ -51,19 +56,35 @@ public class EssayService implements IEssayService {
         Long isAddSuccess = stringRedisTemplate.opsForSet().add(key, userStr);
 
         if (isAddSuccess != null) {
-            if (Boolean.TRUE.equals(isAddSuccess)) {
+            if (isAddSuccess>=1) {
                 // 2. add成功 → 首次点赞 → 数据库点赞数+1
+                log.info("点赞成功");
                 essayMapper.incryLikes(id);
+                return Result.ok("点赞成功");
             } else {
                 // 3. add失败（元素已存在）→ 取消点赞 → 先移除Redis中的用户ID，再数据库点赞数-1
                 Long removeCount = stringRedisTemplate.opsForSet().remove(key, userStr);
+                log.info("移除点赞用户");
                 if (removeCount != null && removeCount > 0) {
+                    log.info("取消点赞成功");
                     essayMapper.decryLikes(id);
                 }
+                return Result.ok("取消点赞成功");
             }
         } else {
             // 4. Redis操作失败（如服务不可用）→ 抛出异常或降级处理（根据业务需求）
-            throw new RuntimeException("Redis服务异常，点赞操作失败");
+            return Result.fail("点赞失败");
         }
+    }
+
+    @Override
+    public Result getAllEssay() {
+        List<EssayVO> allessay = essayMapper.getAllessay();
+        return Result.ok(allessay);
+    }
+
+    @Override
+    public Essay getSingleEssay(Integer id) {
+        return essayMapper.getSingleEssay(id);
     }
 }

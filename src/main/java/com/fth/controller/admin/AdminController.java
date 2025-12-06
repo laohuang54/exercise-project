@@ -5,6 +5,7 @@ import com.fth.pojo.Admin;
 import com.fth.pojo.User;
 import com.fth.properties.JwtProperty;
 import com.fth.service.IAdminService;
+import com.fth.service.impl.EssayService;
 import com.fth.utils.JwtUtil;
 import com.fth.vo.UserVO;
 import com.github.pagehelper.PageInfo;
@@ -27,6 +28,14 @@ public class AdminController {
     private IAdminService adminService;
     @Autowired
     private JwtProperty jwtProperty;
+    @Autowired
+    private EssayService essayService;
+
+    @DeleteMapping("/delete/{id}")
+    public Result deleteEssayAdmin(@PathVariable Integer id) {
+        essayService.deleteEssayAdmin(id);
+        return Result.ok();
+    }
 
     @PostMapping("/login")
     public Result login(@RequestBody LoginDTO loginDTO){

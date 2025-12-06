@@ -1,17 +1,18 @@
 package com.fth.vo;
 
-import com.fth.pojo.Essay;
 import com.fth.pojo.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserVO extends User {
+public class SignVO {
+    private Integer id;
 
-    private List<Essay> essays;
+    private Long signedCount; // 当月已签到天数
+
+    private Integer continueSignCount; // 连续签到天数
+
 }

@@ -2,6 +2,7 @@ package com.fth.service;
 
 import com.fth.dto.EssayDTO;
 import com.fth.dto.Result;
+import com.fth.pojo.Essay;
 
 public interface IEssayService {
     Result addEssay(EssayDTO essay, String imgUrl);
@@ -10,6 +11,9 @@ public interface IEssayService {
 
     void deleteEssayAdmin(Integer id);
 
-    public void likeEssay(Integer id);
+    public Result likeEssay(Integer id);
 
+    Result getAllEssay();
+
+    Essay getSingleEssay(Integer id);
 }

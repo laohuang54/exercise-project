@@ -22,10 +22,13 @@ public class AdminInterceptor implements HandlerInterceptor {
         }
         try{
             Claims claims = JwtUtil.parseJWT(jwtProperty.getAdminSecretKey(), token);
-            Long userId=Long.valueOf(claims.get(ADMIN_ID).toString());
+            Integer userId= (Integer) claims.get(ADMIN_ID);
             UserHolder.saveUser(userId);
         }catch (Exception e){
             response.setStatus(401);
+            response.setContentType("application/json;charset=UTF-8");
+            // 3. 返回标准JSON错误信息
+            response.getWriter().write("{\"code\":401,\"msg\":\"Token缺失或无效\"}");
             return false;
         }
         return true;
